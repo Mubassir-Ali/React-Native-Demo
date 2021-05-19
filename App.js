@@ -1,6 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 
 const Data = [
   { name: "ali", id: "1" },
@@ -14,26 +20,27 @@ const Data = [
 ];
 
 export default function App() {
-  const [person, setPerson] = useState({ name: "Mubassir", age: 28 });
+  
 
-  const [studentName, setStudentName] = useState(Data);
-
+  const [person, setPerson] = useState(Data);
+const pressHandler=(id)=>{
+  console.log(id);
+  setPerson((prevPerson)=>{
+    return prevPerson.filter(person=>person.id !=id)
+  })
+}
   return (
     <View style={styles.container}>
       <FlatList
-        keyExtractor={(item=>item.id)}
-        data={studentName}
-        renderItem={({ item }) => <Text style={styles.item}>{item.name}</Text>}
+        numColumns={2}
+        keyExtractor={(item) => item.id}
+        data={person}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={()=>pressHandler(item.id)}>
+            <Text style={styles.item}>{item.name}</Text>
+          </TouchableOpacity>
+        )}
       />
-
-      {/* <ScrollView>
-    {studentName.map((item) => (
-        <View key={item.key}>
-          <Text style={styles.item}>{item.name}</Text>
-        </View>
-      ))}
-
-    </ScrollView> */}
 
       <StatusBar style="auto" />
     </View>
@@ -56,5 +63,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: "center",
     borderRadius: 12,
+    marginHorizontal: 24,
   },
 });
