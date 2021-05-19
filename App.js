@@ -7,8 +7,9 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
+import AddTodo from "./components/AddTodo";
 
-import Header from './components/Header'
+import Header from "./components/Header";
 import TodoItem from "./components/TodoItem";
 
 const todosData = [
@@ -20,23 +21,29 @@ const todosData = [
 export default function App() {
   const [todos, setTodos] = useState(todosData);
 
-  const pressHandler=(key)=>{
-    setTodos((prevTodos)=>{
-      return prevTodos.filter(todo=>todo.key !=key)
-    }
-      
-    )
-  }
+  const pressHandler = (key) => {
+    setTodos((prevTodos) => {
+      return prevTodos.filter((todo) => todo.key != key);
+    });
+  };
+
+  const submitHandler = (text) => {
+    setTodos((prevTodos) => {
+      return [{ text: text, key: Math.random().toString() }, ...prevTodos];
+    });
+  };
 
   return (
     <View style={styles.container}>
-      <Header/>
+      <Header />
       <View style={styles.content}>
-        {/* todo Form */}
+        <AddTodo submitHandler={submitHandler} />
         <View style={styles.list}>
           <FlatList
             data={todos}
-            renderItem={({ item }) => <TodoItem item={item} pressHandler={pressHandler} />}
+            renderItem={({ item }) => (
+              <TodoItem item={item} pressHandler={pressHandler} />
+            )}
           />
         </View>
       </View>
@@ -51,9 +58,8 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 40,
-    
   },
-  list:{
-    marginTop:24
-  }
+  list: {
+    marginTop: 24,
+  },
 });
